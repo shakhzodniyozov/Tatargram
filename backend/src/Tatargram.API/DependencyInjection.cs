@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Tatargram.Data;
+using Tatargram.Helpers;
 using Tatargram.Interfaces.Repositories;
 using Tatargram.Interfaces.Services;
 using Tatargram.Models;
@@ -83,6 +84,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<TokenService>();
+        services.AddScoped<ImageService>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
 

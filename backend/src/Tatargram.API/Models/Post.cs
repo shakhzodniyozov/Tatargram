@@ -12,4 +12,5 @@ public class Post : IEntity
     public Guid AuthorId { get; set; }
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<LikedPost> LikedUsers { get; set; } = new List<LikedPost>();
+    public ICollection<Image> Photos { get; set; } = new List<Image>();
 }

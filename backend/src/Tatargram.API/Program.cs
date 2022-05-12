@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Tatargram.Data;
 using Tatargram.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.RegisterServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+DbInitializer.Init(app.Services);
 
 if (app.Environment.IsDevelopment())
 {

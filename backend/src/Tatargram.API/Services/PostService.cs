@@ -1,19 +1,28 @@
+using System.Globalization;
 using AutoMapper;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Tatargram.Helpers;
 using Tatargram.Interfaces.Repositories;
 using Tatargram.Interfaces.Services;
 using Tatargram.Models;
+using Tatargram.Posts.QueryModels;
 
 namespace Tatargram.Services;
 
 public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
 {
-    public PostService(IPostRepository postRepository, IMapper mapper, UserManager<User> userManager, IHttpContextAccessor contextAccessor)
+    private readonly ImageService imageService;
+
+    public PostService(IPostRepository postRepository,
+                        IMapper mapper,
+                        UserManager<User> userManager,
+                        IHttpContextAccessor contextAccessor,
+                        ImageService imageService)
         : base(postRepository, mapper, userManager, contextAccessor)
     {
-
+        this.imageService = imageService;
     }
 
     public override async Task Create(PostBaseQueryModel model)
@@ -23,8 +32,11 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
             throw new NotFoundException("User not found");
 
         model.AuthorId = currentUser.Id;
+        var post = mapper.Map<Post>(model);
+        post.Id = Guid.NewGuid();
+        post.Photos = await imageService.SetImages(post, ((CreatePostQueryModel)model).Photos);
 
-        await repository.Create(mapper.Map<Post>(model));
+        await repository.Create(post);
     }
 
     public async Task<IEnumerable<PostViewModel>> GetPagedFeedList(int page = 1, int pageSize = 30)
@@ -42,9 +54,12 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
 
             vm.Liked = currentUser!.LikedPosts.Intersect(p.LikedUsers) != null;
             vm.Description = p.Description;
-            vm.PublishDate = p.PublishDate.Humanize();
+            vm.PublishDate = p.PublishDate.Humanize(null, null, new CultureInfo("ru-RU"));
             vm.Likes = p.LikedUsers.Count;
             vm.Id = p.Id;
+            vm.AuthorFullName = p.Author.FirstName + " " + p.Author.LastName;
+            vm.AuthorId = p.AuthorId;
+            vm.Images = p.Photos.Select(x => x.RelativePaths!).ToList();
 
             viewModels.Add(vm);
         }
@@ -68,5 +83,11 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
         });
 
         await repository.Update(post);
+    }
+
+    public override Task Delete(Guid id)
+    {
+        imageService.DeletePostImages(id);
+        return base.Delete(id);
     }
 }

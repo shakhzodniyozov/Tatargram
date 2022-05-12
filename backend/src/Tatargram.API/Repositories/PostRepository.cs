@@ -31,6 +31,8 @@ public class PostRepository : BaseRepository<Post>, IPostRepository
 
         var posts = await entities.Where(x => userSubscriptions.Contains(x.AuthorId))
                                     .Include(x => x.LikedUsers)
+                                    .Include(x => x.Photos)
+                                    .Include(x => x.Author)
                                     .OrderByDescending(x => x.PublishDate)
                                     .Skip(page * pageSize - pageSize)
                                     .Take(pageSize)

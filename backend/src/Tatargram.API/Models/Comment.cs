@@ -1,4 +1,4 @@
-namespace Tatargram.Domain.Entities;
+namespace Tatargram.Models;
 public class Comment
 {
     public Guid Id { get; set; }

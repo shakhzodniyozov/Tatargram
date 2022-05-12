@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tatargram.Domain.Entities;
+using Tatargram.Models;
 
-namespace Tatargram.Infrastructure.Persistence.Configurations;
+namespace Tatargram.Data.Configurations;
 
 public class PostConfig : IEntityTypeConfiguration<Post>
 {

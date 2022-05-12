@@ -33,7 +33,7 @@ public class BaseService<TEntity, TQueryModel> : IService<TEntity, TQueryModel>
         await repository.Delete(model);
     }
 
-    public async Task Delete(Guid id)
+    public virtual async Task Delete(Guid id)
     {
         await repository.Delete(id);
     }

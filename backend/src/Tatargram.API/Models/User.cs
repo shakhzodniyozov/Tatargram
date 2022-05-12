@@ -11,4 +11,5 @@ public class User : IdentityUser<Guid>
     public ICollection<Subscription> Subscriptions { get; set; } = null!;
     public ICollection<Post> Posts { get; set; } = null!;
     public ICollection<LikedPost> LikedPosts { get; set; } = null!;
+    public ICollection<Image> Photos { get; set; } = new List<Image>();
 }

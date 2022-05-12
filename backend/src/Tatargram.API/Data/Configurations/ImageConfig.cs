@@ -10,6 +10,8 @@ public class ImageConfig : IEntityTypeConfiguration<Image>
     {
         builder.ToTable("Images");
 
+        builder.Ignore(x => x.RelativePaths);
+
         builder.HasOne(x => x.User)
                 .WithMany(x => x.Photos)
                 .OnDelete(DeleteBehavior.Cascade)

@@ -1,3 +1,4 @@
+using System.Globalization;
 using AutoMapper;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
@@ -53,9 +54,12 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
 
             vm.Liked = currentUser!.LikedPosts.Intersect(p.LikedUsers) != null;
             vm.Description = p.Description;
-            vm.PublishDate = p.PublishDate.Humanize();
+            vm.PublishDate = p.PublishDate.Humanize(null, null, new CultureInfo("ru-RU"));
             vm.Likes = p.LikedUsers.Count;
             vm.Id = p.Id;
+            vm.AuthorFullName = p.Author.FirstName + " " + p.Author.LastName;
+            vm.AuthorId = p.AuthorId;
+            vm.Images = p.Photos.Select(x => x.RelativePaths!).ToList();
 
             viewModels.Add(vm);
         }

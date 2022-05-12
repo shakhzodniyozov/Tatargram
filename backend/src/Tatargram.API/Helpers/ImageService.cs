@@ -32,7 +32,7 @@ public class ImageService
             else if (entity.GetType().Name == nameof(User))
                 image.UserId = entity.Id;
 
-            images.Add(new Image() { Name = fileName });
+            images.Add(new Image() { AbsolutePath = fileName });
         }
 
         return images;

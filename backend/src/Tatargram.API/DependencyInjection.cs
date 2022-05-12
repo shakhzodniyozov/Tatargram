@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Tatargram.Data;
 using Tatargram.Interfaces.Repositories;
 using Tatargram.Interfaces.Services;
@@ -50,13 +51,40 @@ public static class DependencyInjection
             };
         });
 
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new() { Title = "Tatargram", Version = "v1" });
+            options.AddSecurityDefinition("Bearer", new()
+            {
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                BearerFormat = "JWT",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Description = "Enter valid access token.",
+                Scheme = "Bearer"
+            });
+
+            options.AddSecurityRequirement(new()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
+            });
+        });
+
         services.AddHttpContextAccessor();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<TokenService>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
-
-
 
         return services;
     }

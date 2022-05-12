@@ -10,4 +10,5 @@ public class User : IdentityUser<Guid>
     public string? ImageUrl { get; set; }
     public ICollection<Subscription> Subscriptions { get; set; } = null!;
     public ICollection<Post> Posts { get; set; } = null!;
+    public ICollection<LikedPost> LikedPosts { get; set; } = null!;
 }

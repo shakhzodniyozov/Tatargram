@@ -1,10 +1,14 @@
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Tatargram.Data;
+using Tatargram.Interfaces.Repositories;
+using Tatargram.Interfaces.Services;
 using Tatargram.Models;
+using Tatargram.Repositories;
 using Tatargram.Services;
 
 public static class DependencyInjection
@@ -46,7 +50,12 @@ public static class DependencyInjection
             };
         });
 
+        services.AddHttpContextAccessor();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<TokenService>();
+        services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<IPostService, PostService>();
+
 
 
         return services;

@@ -1,6 +1,8 @@
+using Tatargram.Interfaces;
+
 namespace Tatargram.Models;
 
-public class Subscription
+public class Subscription : IEntity
 {
     public Guid Id { get; set; }
     public User User { get; set; } = null!;

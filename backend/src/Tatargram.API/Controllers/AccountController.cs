@@ -4,15 +4,15 @@ using Tatargram.Models;
 using Tatargram.QueryModels.Auth;
 using Tatargram.Services;
 
-namespace Tatargram.API.Contollers;
+namespace Tatargram.Contollers;
 
 [Route("api/[controller]")]
-public class AccountContoller : BaseContoller
+public class AccountController : BaseContoller
 {
     private readonly UserManager<User> userManager;
     private readonly TokenService tokenService;
 
-    public AccountContoller(UserManager<User> userManager, TokenService tokenService)
+    public AccountController(UserManager<User> userManager, TokenService tokenService)
     {
         this.userManager = userManager;
         this.tokenService = tokenService;

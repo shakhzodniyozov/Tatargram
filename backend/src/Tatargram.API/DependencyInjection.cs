@@ -87,8 +87,10 @@ public static class DependencyInjection
         services.AddScoped<TokenService>();
         services.AddScoped<ImageService>();
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ICommentService, CommentService>();
 
         return services;
     }

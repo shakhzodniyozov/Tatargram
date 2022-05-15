@@ -10,7 +10,10 @@ namespace Tatargram.Services;
 
 public class BaseService<TEntity, TQueryModel> : IService<TEntity, TQueryModel>
 {
-    public BaseService(IRepository<TEntity> repository, IMapper mapper, UserManager<User> userManager, IHttpContextAccessor contextAccessor)
+    public BaseService(IRepository<TEntity> repository,
+                        IMapper mapper,
+                        UserManager<User> userManager,
+                        IHttpContextAccessor contextAccessor)
     {
         this.repository = repository;
         this.mapper = mapper;
@@ -43,7 +46,9 @@ public class BaseService<TEntity, TQueryModel> : IService<TEntity, TQueryModel>
         await repository.Delete(mapper.Map<TEntity>(model));
     }
 
-    public virtual async Task<IEnumerable<TViewModel>> GetAll<TViewModel>(Expression<Func<TEntity, bool>> expression = null!, Expression<Func<TEntity, object>> include = null!, bool disableTracking = false)
+    public virtual async Task<IEnumerable<TViewModel>> GetAll<TViewModel>(Expression<Func<TEntity, bool>> expression = null!,
+                                                                        Expression<Func<TEntity, object>> include = null!,
+                                                                        bool disableTracking = false)
     {
         var entities = await repository.GetAll(expression, include, disableTracking);
 

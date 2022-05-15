@@ -14,7 +14,8 @@ public class User : IdentityUser<Guid>
     public string? ProfileImage { get; set; }
     public ICollection<UserFollower> Followers { get; set; } = new List<UserFollower>();
     public ICollection<UserFollowing> Followings { get; set; } = new List<UserFollowing>();
-    public ICollection<Post> Posts { get; set; } = null!;
-    public ICollection<LikedPost> LikedPosts { get; set; } = null!;
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
+    public ICollection<LikedPost> LikedPosts { get; set; } = new List<LikedPost>();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<Image> Photos { get; set; } = new List<Image>();
 }

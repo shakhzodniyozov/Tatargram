@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using Tatargram.Data;
 using Tatargram.Middleware;
 
@@ -17,7 +16,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandler>();
+// app.UseMiddleware<ExceptionHandler>();
 app.UseRouting();
 
 app.UseHttpsRedirection();

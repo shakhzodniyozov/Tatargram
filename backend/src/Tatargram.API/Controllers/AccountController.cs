@@ -6,8 +6,8 @@ using Tatargram.Services;
 
 namespace Tatargram.Contollers;
 
-[Route("api/[controller]")]
-public class AccountController : BaseContoller
+[ApiController, Route("api/[controller]")]
+public class AccountController : Controller
 {
     private readonly UserManager<User> userManager;
     private readonly TokenService tokenService;

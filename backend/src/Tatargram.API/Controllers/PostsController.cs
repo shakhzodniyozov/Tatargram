@@ -5,9 +5,8 @@ using Tatargram.Posts.QueryModels;
 
 namespace Tatargram.Contollers;
 
-[Authorize]
-[Route("api/[controller]")]
-public class PostsController : BaseContoller
+[Authorize, ApiController, Route("api/[controller]")]
+public class PostsController : Controller
 {
     private readonly IPostService postService;
 

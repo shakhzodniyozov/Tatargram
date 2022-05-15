@@ -82,11 +82,13 @@ public static class DependencyInjection
         });
 
         services.AddHttpContextAccessor();
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddScoped<TokenService>();
         services.AddScoped<ImageService>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IPostService, PostService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

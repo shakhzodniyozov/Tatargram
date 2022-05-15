@@ -50,4 +50,13 @@ public class ImageService
     {
         Directory.Delete($"{ImagePath}/images/Post/{id.ToString()}", true);
     }
+
+    public void DeleteImage(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch { }
+    }
 }

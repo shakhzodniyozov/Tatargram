@@ -46,13 +46,13 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
         var viewModels = new List<PostViewModel>();
 
         var currentUser = await userManager.Users.Include(x => x.LikedPosts)
-                                    .FirstOrDefaultAsync(x => x.NormalizedUserName == contextAccessor.HttpContext!.User!.Identity!.Name!.ToUpper());
+                                    .FirstAsync(x => x.NormalizedUserName == contextAccessor.HttpContext!.User!.Identity!.Name!.ToUpper());
 
         foreach (var p in posts)
         {
             var vm = new PostViewModel();
 
-            vm.Liked = currentUser!.LikedPosts.Intersect(p.LikedUsers) != null;
+            vm.Liked = currentUser.LikedPosts.Any(x => x.PostId == p.Id);
             vm.Description = p.Description;
             vm.PublishDate = p.PublishDate.Humanize(null, null, new CultureInfo("ru-RU"));
             vm.Likes = p.LikedUsers.Count;
@@ -60,6 +60,7 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
             vm.AuthorFullName = p.Author.FirstName + " " + p.Author.LastName;
             vm.AuthorId = p.AuthorId;
             vm.Images = p.Photos.Select(x => x.RelativePaths!).ToList();
+            vm.AuthorPhoto = currentUser.ProfileImage;
 
             viewModels.Add(vm);
         }

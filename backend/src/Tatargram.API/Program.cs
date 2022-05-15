@@ -16,7 +16,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseMiddleware<ExceptionHandler>();
+app.UseMiddleware<ExceptionHandler>();
 app.UseRouting();
 
 app.UseHttpsRedirection();

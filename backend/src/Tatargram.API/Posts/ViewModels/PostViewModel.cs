@@ -7,5 +7,5 @@ public class PostViewModel : PostBaseViewModel
     public int Likes { get; set; }
     public bool Liked { get; set; }
     public List<string> Images { get; set; } = new();
-    public string? AuthorAvatarImage { get; set; }
+    public string? AuthorPhoto { get; set; }
 }

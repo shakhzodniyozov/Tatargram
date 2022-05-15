@@ -15,8 +15,22 @@ public class DbInitializer
 
         if (userManager.FindByNameAsync("user1").GetAwaiter().GetResult() == null)
         {
-            User user = new() { UserName = "user1" };
-            userManager.CreateAsync(user, "12345678").GetAwaiter().GetResult();
+            User user1 = new()
+            {
+                UserName = "user1",
+                FirstName = "Иван1",
+                LastName = "Иванов1",
+                DateOfBirth = DateTime.Now.AddYears(-20)
+            };
+            User user2 = new()
+            {
+                UserName = "user2",
+                FirstName = "Иван2",
+                LastName = "Иванов2",
+                DateOfBirth = DateTime.Now.AddYears(-20)
+            };
+            userManager.CreateAsync(user1, "12345678").GetAwaiter().GetResult();
+            userManager.CreateAsync(user2, "12345678").GetAwaiter().GetResult();
         }
         scope.Dispose();
     }

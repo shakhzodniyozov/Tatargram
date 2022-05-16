@@ -5,52 +5,28 @@ import Feed from '../components/Feed';
 import Topbar from '../components/Topbar';
 import Sidebar from '../components/Sidebar';
 import axios from "../axios/axios";
+import { useState, useEffect } from "react";    
 
 function Profile() {
     const token = localStorage.getItem('user')
-    const data = () => {
-        axios.get('/User/current')
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    const [dt, setDt] = useState({})
+    const [followers, setFollowers] = useState()
+    const [followings, setFollowings] = useState()
 
-    const fakedata = {
-        fullName: "Имя Фамилия",
-        dateOfBirth: "string",
-        isSubscribed: true,
-        profileImage: "string",
-        posts: [
-            {
-                id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                authorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                authorFullName: "string",
-                description: "string",
-                publishDate: "string",
-                likes: 0,
-                liked: true,
-                images: [
-                    "string"
-                ],
-                authorPhoto: "string"
-            }
-        ],
-        followers: [
-            {
-                id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                fullName: "string"
-            }
-        ],
-        followings: [
-            {
-                id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                fullName: "string"
-            }
-        ]
-    }
+    useEffect(() => {
+        axios.get('/User/current')
+        .then(function (response) {
+            console.log(response.data);
+            setFollowers(response.data.followers.length)
+            setFollowings(response.data.followings.length)
+            setDt(response.data);
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });  
+      }, []);
+    
 
     return (
         <>
@@ -72,8 +48,9 @@ function Profile() {
                             />
                         </div>
                         <div className="profileInfo">   
-                            <h4 className="profileInfoName">{fakedata.fullName}</h4>
-                            <span className="profileInfoDesc">This is currently empty</span>
+                            <h4 className="profileInfoName">{dt.fullName}</h4>
+                            {/* <span className="profileInfoDesc">This is currently empty</span> */}
+                            <span className="profileInfoDesc">Followers: {followers} Following: {followings}</span>
                         </div>
                     </div>
                     <div className="profileRightBottom">

@@ -16,6 +16,8 @@ export function SignUp() {
     password: ""
   });
 
+  const [error, setError] = useState({});
+
   const navigate = useNavigate();
 
   function uploadForm() {
@@ -24,8 +26,10 @@ export function SignUp() {
         localStorage.setItem("token", response.data.accessToken);
         navigate("/");
       }
-    });
-    console.log(form);
+    })
+      .catch(error => {
+        setError(error.response.data);
+      });
   }
 
   return (
@@ -35,6 +39,7 @@ export function SignUp() {
           <h3 className="loginLogo">Our App</h3>
         </div>
         <div className="loginRight">
+          <span className="text-danger">{error.message}</span>
           <TextField
             label="Имя"
             variant="standard"

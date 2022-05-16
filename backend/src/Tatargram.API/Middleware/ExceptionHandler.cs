@@ -30,8 +30,8 @@ public class ExceptionHandler
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(new
         {
-            Status = (int)StatusCodes.Status500InternalServerError,
-            Message = e.Message
+            status = (int)StatusCodes.Status500InternalServerError,
+            message = e.Message
         }));
     }
 }

@@ -28,7 +28,12 @@ public class AccountController : Controller
         {
             var token = tokenService.GenerateToken(user);
 
-            return Ok(new { AccessToken = token });
+            return Ok(new
+            {
+                AccessToken = token,
+                FullName = user.FirstName + " " + user.LastName,
+                ProfileImage = user.ProfileImage
+            });
         }
 
         return Unauthorized(new { Message = "Неправильный логин или пароль" });
@@ -54,7 +59,9 @@ public class AccountController : Controller
 
             return new
             {
-                AccessToken = tokenService.GenerateToken(user)
+                AccessToken = tokenService.GenerateToken(user),
+                FullName = user.FirstName + " " + user.LastName,
+                ProfileImage = user.ProfileImage
             };
         }
 

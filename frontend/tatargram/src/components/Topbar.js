@@ -1,18 +1,14 @@
-import "../css/topbar.css";
 import { Search, Person, Chat, Notifications } from "@mui/icons-material";
-// import { Link } from "react-router-dom";
-import { useContext } from "react";
-// import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
+import authService from "../services/auth.service";
+import { Avatar, Typography } from "@mui/material";
+import "../css/topbar.css";
 
 export default function Topbar() {
-  // const { user } = useContext(AuthContext);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        {/* <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Lamasocial</span>
-        </Link> */}
       </div>
       <div className="topbarCenter">
         <div className="searchbar">
@@ -42,17 +38,22 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
-        {/* <Link to={`/profile/${user.username}`}>
-          <img
-            src={
-              user.profilePicture
-                ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
-            }
-            alt=""
-            className="topbarImg"
-          />
-        </Link> */}
+        {authService.isAuthenticated() ?
+          <Link to={`/profile`}>
+            <div className="d-flex align-items-center">
+              <Avatar
+                src={authService.user.profileImage}
+              />
+              <Typography className="mx-1" style={{ color: "white" }}>{authService.user.fullName}</Typography>
+            </div>
+          </Link> :
+          <Link
+            to={"/signin"}
+            style={{ color: "white" }}
+          >
+            Войти
+          </Link>
+        }
       </div>
     </div>
   );

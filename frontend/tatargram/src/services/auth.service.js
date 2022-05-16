@@ -1,6 +1,8 @@
 import axios from "../axios/axios";
 
 class AuthService {
+    user = JSON.parse(localStorage.getItem("user"));
+
     async signIn(data) {
         return await axios.post("/account/signin", data);
     }
@@ -9,8 +11,12 @@ class AuthService {
         return await axios.post("/account/signup", data);
     }
 
+    signOut() {
+        localStorage.removeItem("user");
+    }
+
     isAuthenticated() {
-        return localStorage.getItem("token") !== null
+        return localStorage.getItem("user") !== null
     }
 }
 

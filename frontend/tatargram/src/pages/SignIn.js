@@ -13,7 +13,7 @@ export function SignIn() {
   function uploadForm() {
     authService.signIn(form).then(response => {
       if (response) {
-        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
       }
     })
@@ -30,7 +30,7 @@ export function SignIn() {
           <h3 className="loginLogo">Авторизация</h3>
         </div>
         <div className="loginRight">
-          <span>{error.message}</span>
+          <span className="text-danger">{error.message}</span>
           <TextField
             label="Имя пользователья"
             variant="standard"

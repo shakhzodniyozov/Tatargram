@@ -4,14 +4,14 @@ axios.interceptors.response.use(response => {
     return response;
 }, error => {
     if (error.response.status === 401)
-        window.location.href.replace("/login");
+        window.location.href.replace("/signin");
     return Promise.reject(error);
 });
 
 axios.interceptors.request.use(request => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        request.headers["Authorization"] = "Bearer " + token;
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+        request.headers["Authorization"] = "Bearer " + user.accessToken;
     }
 
     return request;

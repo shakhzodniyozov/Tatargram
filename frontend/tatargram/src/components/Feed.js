@@ -1,106 +1,105 @@
 
+import { Avatar, Button, CircularProgress, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
+import postService from "../services/post.service";
 import "../css/post.css";
-import Comments from './Comments';
-//import TodoApp from './Todo';
+import { Link } from "react-router-dom";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { IoChatbubbleOutline } from "react-icons/io5";
 
 function Feed() {
-    const [resourceType, setResourceType] = useState([])
-    const [items, setItems] = useState([])
-    const [comments, setComments] = useState([])
-    const [id, setId] = useState([])
+  const [posts, setPosts] = useState([]);
+  const [comment, setComment] = useState({ postId: "", text: "", publishDate: null });
+  const [loading, setLoading] = useState(true);
 
-    const getInputValue = (event) => {
-        // show the user input value to console
-        setId(event.target.value)
-        console.log(comments)
-        console.log(items)
-    };
+  useEffect(() => {
+    postService.getPosts().then(response => {
+      if (response) {
+        setPosts(response.data);
+        setLoading(false);
+      }
+    })
+  }, []);
 
-    useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/${resourceType}${id}`)
-            .then(response => response.json())
-            .then(json => setItems(json))
-        console.log(id)
+  function likeThePost() {
 
-        fetch(`https://jsonplaceholder.typicode.com/comments/?postId=${id}`)
-            .then(response => response.json())
-            .then(json => setComments(json))
-    }, [resourceType])
+  }
 
-    return (
-
-        <>
-
-            <div className="feed">
-
-                <div>
-                    <button onClick={() => setResourceType('posts/?userId=')}>Posts</button>
-                    <button onClick={() => setResourceType('users/?id=')}>Users</button>
-                    <button onClick={() => setResourceType('comments/?postId=')}>Comments</button>
-
-                    <input type="text" onChange={getInputValue} />
+  return !loading ? (
+    <div className="d-flex flex-column align-items-center">
+      {posts.map(post => {
+        return (
+          <div key={post.id} className="post">
+            <div className="px-4 py-3">
+              <Link
+                to={`/profile/${post.authorId}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <div className="d-flex flex-row align-items-center">
+                  <Avatar
+                    src={post.authorPhoto}
+                  />
+                  <span className="mx-1 text-black">
+                    <strong>{post.authorFullName}</strong>
+                  </span>
                 </div>
-
-                <h1>
-                    {resourceType}
-                </h1>
-
-                {items.map(item => {
-                    //   return <div>
-                    //       <h2>{item.title}</h2>
-
-                    //       <span>{item.body}</span>
-                    //       </div>
-
-
-                    return <div className="post">
-                        <div className="postWrapper">
-                            <div className="postTop">
-                                <div className="postTopLeft">
-                                    {/* <img
-                                            className="postProfileImg"
-                                            src={Users.filter((u) => u.id === post?.userId)[0].profilePicture}
-                                            alt=""
-                                        /> */}
-                                    <span className="postUsername">
-                                        User: {item.userId}
-                                    </span>
-
-
-                                    {/* <span className="postDate">{post.date}</span> */}
-                                </div>
-
-                                {/* <div className="postTopRight">
-                                    </div> */}
-                            </div>
-                            <div><h2>{item.title}</h2></div>
-                            <div className="postCenter">
-                                <span className="postText">{item.body}</span>
-                                <img className="postImg" src="https://upload.wikimedia.org/wikipedia/ru/7/7c/Goofy2013.jpg" alt="" />
-                            </div>
-                            <div className="postBottom">
-                                <div className="postBottomLeft">
-                                    {/* <img className="likeIcon" src="assets/like.png" onClick={likeHandler} alt="" />
-                                        <img className="likeIcon" src="assets/heart.png" onClick={likeHandler} alt="" />
-                                        <span className="postLikeCounter">{like} people like it</span> */}
-                                </div>
-                                <div className="postBottomRight">
-                                    {/* <span className="postCommentText">{post.comment} comments</span> */}
-                                </div>
-                            </div>
-                        </div>
-                        <Comments postid={item.id} />
-                    </div>
-
-
-
-                })}
-
+              </Link>
             </div>
+            <div>
+              {post.images.map(image => {
+                return (
+                  <img
+                    className="postImg"
+                    src={`http://localhost:5000/api/content?path=${image}`}
+                    alt={post.description}
+                  />
+                )
+              })}
+            </div>
+            <div className="p-3 d-flex flex-column">
+              <div className="d-flex">
+                {
+                  post.liked ?
+                    <BsHeartFill
+                      size={32}
+                      color="#ed404f"
 
-        </>
-    );
+                    /> :
+                    <BsHeart
+                      size={32}
+                      onClick={likeThePost}
+                    />
+                }
+                <IoChatbubbleOutline size={32} className="mx-3" />
+              </div>
+              <span className="mt-1"><strong>{post.likes} лайков</strong></span>
+              <span className="mt-2">{post.description}</span>
+              <span className="text-secondary">{post.publishDate}</span>
+              <div className="d-flex mt-1">
+                <TextField
+                  label="Коммент..."
+                  variant="standard"
+                  fullWidth
+                  onChange={e => setComment({ ...comment, postId: post.id, text: e.target.value })}
+                />
+                <Button
+                  variant="text"
+                  className="ms-1"
+                  disabled={comment.text.length === 0}
+                >
+                  Отправить
+                </Button>
+              </div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  ) : (
+    <div className="d-flex justify-content-center mt-4">
+      <CircularProgress />
+    </div>
+  );
 }
 
 export default Feed;

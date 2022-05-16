@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tatargram.Models;
@@ -6,7 +7,7 @@ using Tatargram.Services;
 
 namespace Tatargram.Contollers;
 
-[ApiController, Route("api/[controller]")]
+[AllowAnonymous, ApiController, Route("api/[controller]")]
 public class AccountController : Controller
 {
     private readonly UserManager<User> userManager;

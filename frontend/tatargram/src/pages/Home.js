@@ -5,12 +5,11 @@ import Topbar from '../components/Topbar';
 import Sidebar from '../components/Sidebar';
 
 function Home() {
-
     return (
         <>
             <Topbar />
-            <div style={{ display: 'flex', width: '100%' }} className="homeContainer">
-                <Sidebar />
+            <div className="container">
+                {/* <Sidebar /> */}
                 <Feed />
             </div>
         </>

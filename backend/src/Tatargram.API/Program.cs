@@ -20,27 +20,8 @@ app.UseCors("ClientPolicy");
 app.UseMiddleware<ExceptionHandler>();
 app.UseRouting();
 
-app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAuthentication();
-
-app.UseStaticFiles(new StaticFileOptions()
-{
-    OnPrepareResponse = (ctx) =>
-    {
-        if (ctx.Context.Request.Path.StartsWithSegments("/images"))
-        {
-            ctx.Context.Response.Headers.Add("Cache-Control", "no-store");
-            if (!ctx.Context.User.Identity!.IsAuthenticated)
-            {
-                ctx.Context.Response.StatusCode = 401;
-                ctx.Context.Response.ContentLength = 0;
-                ctx.Context.Response.Body = Stream.Null;
-            }
-        }
-    }
-});
-
 app.UseAuthorization();
 
 app.UseEndpoints(endpoint => endpoint.MapControllers());

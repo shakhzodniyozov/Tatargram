@@ -4,7 +4,7 @@ import authService from "../services/auth.service";
 import { Avatar, Typography } from "@mui/material";
 import "../css/topbar.css";
 
-export default function Topbar() {
+export function Topbar() {
 
   return (
     <div className="topbarContainer">
@@ -39,7 +39,7 @@ export default function Topbar() {
           </div>
         </div>
         {authService.isAuthenticated() ?
-          <Link to={`/profile`}>
+          <Link to={`/`}>
             <div className="d-flex align-items-center">
               <Avatar
                 src={authService.user.profileImage}

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoChatbubbleOutline } from "react-icons/io5";
 
-function Feed() {
+export function Feed() {
   const [posts, setPosts] = useState([]);
   const [comment, setComment] = useState({ postId: "", text: "", publishDate: null });
   const [loading, setLoading] = useState(true);
@@ -101,5 +101,3 @@ function Feed() {
     </div>
   );
 }
-
-export default Feed;

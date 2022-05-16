@@ -10,10 +10,8 @@ import {
   Event,
   School,
 } from "@mui/icons-material";
-import { Users } from "../dummyData";
-import Following from "./Following";
 
-export default function Sidebar() {
+export function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -57,11 +55,6 @@ export default function Sidebar() {
         </ul>
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
-        <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <Following key={u.id} user={u} />
-          ))}
-        </ul>
       </div>
     </div>
   );

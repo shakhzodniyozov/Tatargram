@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import "./post.css"
+import "../css/post.css";
 import Comments from './Comments';
 //import TodoApp from './Todo';
 

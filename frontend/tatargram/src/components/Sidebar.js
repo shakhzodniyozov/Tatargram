@@ -1,4 +1,4 @@
-import "./sidebar.css";
+import "../css/sidebar.css";
 import {
   RssFeed,
   Chat,

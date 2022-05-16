@@ -1,28 +1,18 @@
 
-import './App.css';
-import { useState, useEffect } from "react";
-//import "./post.css"
+import './css/App.css';
 import Home from './pages/Home';
-import Register from './pages/Register';
-import Login from './pages/Login';
+import { SignUp } from './pages/SignUp';
 import { Routes, Route, Link } from 'react-router-dom';
-//import TodoApp from './Todo';
+import { SignIn } from './pages/SignIn';
 
 function App() {
 
     return (
-        <>
-           
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Register />} />
-            </Routes>
-
-
-
-
-        </>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+        </Routes>
     );
 }
 

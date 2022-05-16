@@ -1,16 +1,20 @@
-import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
-import './index.css';
-import { Button } from 'antd';
+import './css/App.css';
+import Home from './pages/Home';
+import { SignUp } from './pages/SignUp';
+import { Routes, Route } from 'react-router-dom';
+import { SignIn } from './pages/SignIn';
+import { Profile } from './pages/Profile';
 
-ReactDOM.render(
-  <>
-    <Button type="primary">Primary Button</Button>
-    <Button>Default Button</Button>
-    <Button type="dashed">Dashed Button</Button>
-    <br />
-    <Button type="text">Text Button</Button>
-    <Button type="link">Link Button</Button>
-  </>,
-  document.getElementById('container'),
-);
+function App() {
+
+    return (
+        <Routes>
+            <Route path="/" element={<Profile />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+        </Routes>
+    );
+}
+
+export default App;

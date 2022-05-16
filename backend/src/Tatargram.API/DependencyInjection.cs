@@ -81,6 +81,14 @@ public static class DependencyInjection
             });
         });
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("ClientPolicy", opt =>
+            {
+                opt.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+            });
+        });
+
         services.AddHttpContextAccessor();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());

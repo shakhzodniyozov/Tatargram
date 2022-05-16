@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tatargram.Models;
@@ -6,7 +7,7 @@ using Tatargram.Services;
 
 namespace Tatargram.Contollers;
 
-[ApiController, Route("api/[controller]")]
+[AllowAnonymous, ApiController, Route("api/[controller]")]
 public class AccountController : Controller
 {
     private readonly UserManager<User> userManager;
@@ -28,10 +29,15 @@ public class AccountController : Controller
         {
             var token = tokenService.GenerateToken(user);
 
-            return Ok(new { AccessToken = token });
+            return Ok(new
+            {
+                AccessToken = token,
+                FullName = user.FirstName + " " + user.LastName,
+                ProfileImage = user.ProfileImage
+            });
         }
 
-        return Unauthorized(new { Error = "Неправильный логин или пароль" });
+        return Unauthorized(new { Message = "Неправильный логин или пароль" });
     }
 
     [HttpPost("signup")]
@@ -43,7 +49,8 @@ public class AccountController : Controller
             {
                 UserName = model.UserName,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth.Date.ToLocalTime()
             };
 
             var createResult = await userManager.CreateAsync(user, model.Password);
@@ -53,7 +60,9 @@ public class AccountController : Controller
 
             return new
             {
-                AccessToken = tokenService.GenerateToken(user)
+                AccessToken = tokenService.GenerateToken(user),
+                FullName = user.FirstName + " " + user.LastName,
+                ProfileImage = user.ProfileImage
             };
         }
 

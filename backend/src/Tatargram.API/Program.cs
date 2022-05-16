@@ -16,6 +16,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("ClientPolicy");
 app.UseMiddleware<ExceptionHandler>();
 app.UseRouting();
 

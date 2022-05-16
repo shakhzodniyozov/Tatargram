@@ -31,7 +31,7 @@ public class AccountController : Controller
             return Ok(new { AccessToken = token });
         }
 
-        return Unauthorized(new { Error = "Неправильный логин или пароль" });
+        return Unauthorized(new { Message = "Неправильный логин или пароль" });
     }
 
     [HttpPost("signup")]
@@ -43,7 +43,8 @@ public class AccountController : Controller
             {
                 UserName = model.UserName,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth.Date.ToLocalTime()
             };
 
             var createResult = await userManager.CreateAsync(user, model.Password);

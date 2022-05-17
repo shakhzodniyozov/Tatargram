@@ -11,6 +11,7 @@ export function Feed() {
   const [posts, setPosts] = useState([]);
   const [comment, setComment] = useState({ postId: "", text: "", publishDate: null });
   const [loading, setLoading] = useState(true);
+  const [modalData, setModalData] = useState({});
 
   useEffect(() => {
     postService.getPosts().then(response => {
@@ -21,12 +22,31 @@ export function Feed() {
     })
   }, []);
 
-  function likeThePost() {
+  function likePost(postId) {
+    let postsCopy = [...posts];
+    let likedPost = postsCopy.find(x => x.id === postId);
+    likedPost.likes += 1;
+    likedPost.liked = true;
+    setPosts(postsCopy);
+    postService.likePost(postId);
+  }
+
+  function unlikePost(postId) {
+    let postsCopy = [...posts];
+    let likedPost = postsCopy.find(x => x.id === postId);
+    likedPost.likes -= 1;
+    likedPost.liked = false;
+    setPosts(postsCopy);
+    postService.unlikePost(postId);
+  }
+
+  function getCorrectWord(x) {
 
   }
 
   return !loading ? (
     <div className="d-flex flex-column align-items-center">
+      <button onClick={e => console.log(posts)}>asdasd</button>
       {posts.map(post => {
         return (
           <div key={post.id} className="post">
@@ -46,9 +66,10 @@ export function Feed() {
               </Link>
             </div>
             <div>
-              {post.images.map(image => {
+              {post.images.map((image, i) => {
                 return (
                   <img
+                    key={i}
                     className="postImg"
                     src={`http://localhost:5000/api/content?path=${image}`}
                     alt={post.description}
@@ -63,16 +84,25 @@ export function Feed() {
                     <BsHeartFill
                       size={32}
                       color="#ed404f"
-
+                      onClick={(e) => unlikePost(post.id)}
                     /> :
                     <BsHeart
                       size={32}
-                      onClick={likeThePost}
+                      onClick={_ => likePost(post.id)}
                     />
                 }
                 <IoChatbubbleOutline size={32} className="mx-3" />
               </div>
-              <span className="mt-1"><strong>{post.likes} лайков</strong></span>
+              <div className="mt-1">
+                <span
+                  onClick={_ => {
+                    setModalData({ ...modalData, showLikes: true, postId: post.id })
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <strong>{post.likes} {post.likes === 0 || post.likes > 4 ? "лайков" : "лайка"}</strong>
+                </span>
+              </div>
               <span className="mt-2">{post.description}</span>
               <span className="text-secondary">{post.publishDate}</span>
               <div className="d-flex mt-1">

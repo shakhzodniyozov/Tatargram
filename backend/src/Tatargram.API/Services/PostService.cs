@@ -86,6 +86,25 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
         await repository.Update(post);
     }
 
+    public async Task UnlikeThePost(Guid postId)
+    {
+        var currentUser = await userManager.FindByNameAsync(contextAccessor.HttpContext?.User.Identity?.Name);
+
+        var post = await repository.GetById(postId, x => x.LikedUsers);
+
+        if (post == null)
+            throw new NotFoundException("Post was not found");
+
+        post.LikedUsers.Remove(post.LikedUsers.FirstOrDefault(x => x.UserId == currentUser.Id)!);
+
+        await repository.Update(post);
+    }
+
+    public async Task<IEnumerable<object>> GetLikedUsers(Guid postId)
+    {
+        return await ((IPostRepository)repository).GetLikedUsers(postId);
+    }
+
     public override Task Delete(Guid id)
     {
         imageService.DeletePostImages(id);

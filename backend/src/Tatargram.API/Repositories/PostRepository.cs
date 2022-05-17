@@ -40,4 +40,18 @@ public class PostRepository : BaseRepository<Post>, IPostRepository
                                     .ToListAsync();
         return posts;
     }
+
+    public async Task<IEnumerable<object>> GetLikedUsers(Guid postId)
+    {
+        var post = await entities.Include(x => x.LikedUsers).ThenInclude(x => x.User).FirstOrDefaultAsync(x => x.Id == postId);
+
+        var users = post!.LikedUsers.Select(x => new
+        {
+            Id = x.UserId,
+            FullName = x.User.FirstName + " " + x.User.LastName,
+            ProfileImage = x.User.ProfileImage
+        });
+
+        return users;
+    }
 }

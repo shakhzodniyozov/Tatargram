@@ -63,7 +63,7 @@ public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntit
         if (include != null)
             query = query.Include(include);
 
-        return await entities.FirstOrDefaultAsync(x => x.Id == id);
+        return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task Update(T model)

@@ -6,4 +6,5 @@ namespace Tatargram.Interfaces.Repositories;
 public interface IPostRepository : IRepository<Post>
 {
     Task<IEnumerable<Post>> GetPagedFeedList(int page = 1, int pageSize = 30);
+    Task<IEnumerable<object>> GetLikedUsers(Guid postId);
 }

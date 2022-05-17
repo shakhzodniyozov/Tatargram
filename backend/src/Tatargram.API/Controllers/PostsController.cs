@@ -23,6 +23,11 @@ public class PostsController : Controller
         return Ok(posts);
     }
 
+    [HttpGet("likes/{postId}")]
+    public async Task<ActionResult<IEnumerable<object>>> GetLikedUsers(Guid postId)
+    {
+        return Ok(await postService.GetLikedUsers(postId));
+    }
     #endregion
 
     #region POST
@@ -38,6 +43,13 @@ public class PostsController : Controller
     public async Task<IActionResult> LikeThePost(Guid postId)
     {
         await postService.LikeThePost(postId);
+        return NoContent();
+    }
+
+    [HttpPost("unlike/{postId}")]
+    public async Task<IActionResult> UnikeThePost(Guid postId)
+    {
+        await postService.UnlikeThePost(postId);
         return NoContent();
     }
 

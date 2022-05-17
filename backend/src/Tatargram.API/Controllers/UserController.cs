@@ -20,16 +20,10 @@ public class UserController : Controller
 
     #region GET
 
-    [HttpGet("current")]
-    public async Task<ActionResult<UserInfoViewModel>> GetCurrentUserInfo()
+    [HttpGet("{userName}")]
+    public async Task<ActionResult<UserInfoViewModel>> GetUserInfo(string userName)
     {
-        return Ok(await userService.GetCurrentUserInfo());
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<UserInfoViewModel>> GetUserInfo(Guid id)
-    {
-        return Ok(await userService.GetUserInfo(id));
+        return Ok(await userService.GetUserInfo(userName));
     }
 
     [HttpGet("search")]

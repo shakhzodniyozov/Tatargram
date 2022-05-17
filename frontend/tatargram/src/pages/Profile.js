@@ -2,35 +2,30 @@ import "../css/App.css";
 import "../css/post.css";
 import "../css/profile.css"
 import { Topbar } from '../components/Topbar';
-import { Sidebar } from '../components/Sidebar';
 import axios from "../axios/axios";
 import { useState, useEffect } from "react";
+import { Post } from "../components/Post";
+import { useParams } from "react-router-dom";
 
 export function Profile() {
-  const [dt, setDt] = useState({})
-  const [followers, setFollowers] = useState()
-  const [followings, setFollowings] = useState()
+  const [user, setUser] = useState({ followers: [], followings: [], posts: [] });
+
+  const params = useParams();
 
   useEffect(() => {
-    axios.get('/User/current')
-      .then(function (response) {
-        console.log(response.data);
-        setFollowers(response.data.followers.length)
-        setFollowings(response.data.followings.length)
-        setDt(response.data);
-
-      })
+    axios.get(`/User/${params.userName}`).then(response => {
+      if (response) setUser(response.data)
+    })
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [params.userName]);
 
 
   return (
     <>
       <Topbar />
       <div className="profile">
-        <Sidebar />
         <div className="profileRight">
           <div className="profileRightTop">
             <div className="profileCover">
@@ -46,14 +41,18 @@ export function Profile() {
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{dt.fullName}</h4>
-              {/* <span className="profileInfoDesc">This is currently empty</span> */}
-              <span className="profileInfoDesc">Followers: {followers} Following: {followings}</span>
+              <h4 className="profileInfoName">{user.fullName}</h4>
+              <span className="profileInfoDesc">Followers: {user.followers.length} Following: {user.followings.length}</span>
             </div>
           </div>
           <div className="profileRightBottom">
           </div>
         </div>
+      </div>
+      <div className="container">
+        {user.posts.map(post => {
+          return <Post key={post.id} post={post} posts={user.posts} setPosts={null} />
+        })}
       </div>
     </>
   );

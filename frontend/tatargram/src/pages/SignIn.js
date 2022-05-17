@@ -14,7 +14,7 @@ export function SignIn() {
     authService.signIn(form).then(response => {
       if (response) {
         localStorage.setItem("user", JSON.stringify(response.data));
-        navigate("/");
+        navigate(`/${response.data.userName}`);
       }
     })
       .catch(error => {

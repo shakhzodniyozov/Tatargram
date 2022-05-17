@@ -1,6 +1,6 @@
 public class PostViewModel : PostBaseViewModel
 {
-    public Guid AuthorId { get; set; }
+    public string? AuthorUserName { get; set; }
     public string? AuthorFullName { get; set; }
     public string? Description { get; set; }
     public string? PublishDate { get; set; }

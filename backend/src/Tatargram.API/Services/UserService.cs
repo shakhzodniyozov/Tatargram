@@ -34,13 +34,7 @@ public class UserService : IUserService
         this.currentUser = userManager.FindByNameAsync(httpAccessor.HttpContext!.User.Identity!.Name).GetAwaiter().GetResult();
     }
 
-    public async Task<UserInfoViewModel> GetCurrentUserInfo()
-    {
-        return await GetUserInfo(currentUser.Id);
-
-    }
-
-    public async Task<UserInfoViewModel> GetUserInfo(Guid id)
+    public async Task<UserInfoViewModel> GetUserInfo(string userName)
     {
         var user = await userManager.Users.Include(x => x.Followers)
                                             .Include(x => x.Followings)
@@ -48,7 +42,7 @@ public class UserService : IUserService
                                             .Include(x => x.Posts).ThenInclude(x => x.LikedUsers)
                                             .Include(x => x.Posts).ThenInclude(x => x.Photos)
                                             .AsNoTracking()
-                                            .FirstOrDefaultAsync(x => x.Id == id);
+                                            .FirstOrDefaultAsync(x => x.NormalizedUserName == userName.ToUpper());
 
         if (user == null)
             throw new NotFoundException("User not found");
@@ -61,7 +55,7 @@ public class UserService : IUserService
 
         var posts = user.Posts.Select(x => new PostViewModel()
         {
-            AuthorId = user.Id,
+            AuthorUserName = user.UserName,
             AuthorFullName = $"{user.FirstName} {user.LastName}",
             Description = x.Description,
             Images = x.Photos.Select(p => p.RelativePaths!).ToList(),
@@ -77,7 +71,7 @@ public class UserService : IUserService
             Followers = followers,
             Followings = followings,
             Posts = posts,
-            IsSubscribed = user.Followings.Any(x => x.UserId == id),
+            IsSubscribed = user.Followings.Any(x => x.UserId == user.Id),
             ProfileImage = currentUser.ProfileImage
         };
 
@@ -133,8 +127,12 @@ public class UserService : IUserService
         var users = await userManager.Users.AsNoTracking()
                                     .Where(x => x.FirstName!.ToUpper().StartsWith(value.ToUpper())
                                             || x.LastName!.ToUpper().StartsWith(value.ToUpper()))
-                                    .Select(x => new UserSuggestionViewModel() { Id = x.Id, FullName = $"{x.FirstName} {x.LastName}" })
-                                    .ToArrayAsync();
+                                    .Select(x => new UserSuggestionViewModel()
+                                    {
+                                        UserName = x.UserName,
+                                        FullName = $"{x.FirstName} {x.LastName}",
+                                        ProfileImage = x.ProfileImage
+                                    }).ToArrayAsync();
 
         return users;
     }

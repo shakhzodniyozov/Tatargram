@@ -1,4 +1,4 @@
-import { Search, Person, Chat, Notifications } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import authService from "../services/auth.service";
 import { Avatar, Typography } from "@mui/material";
@@ -9,6 +9,12 @@ export function Topbar() {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
+        <Link
+          to="/"
+          style={{ color: "white", marginLeft: "3rem", fontSize: "2em", textDecoration: "none" }}
+        >
+          Tatargram
+        </Link>
       </div>
       <div className="topbarCenter">
         <div className="searchbar">
@@ -20,31 +26,13 @@ export function Topbar() {
         </div>
       </div>
       <div className="topbarRight">
-        <div className="topbarLinks">
-          <span className="topbarLink">Home</span>
-          <span className="topbarLink">Timeline</span>
-        </div>
-        <div className="topbarIcons">
-          <div className="topbarIconItem">
-            <Person />
-            <span className="topbarIconBadge">1</span>
-          </div>
-          <div className="topbarIconItem">
-            <Chat />
-            <span className="topbarIconBadge">2</span>
-          </div>
-          <div className="topbarIconItem">
-            <Notifications />
-            <span className="topbarIconBadge">1</span>
-          </div>
-        </div>
         {authService.isAuthenticated() ?
-          <Link to={`/`}>
+          <Link to={`/${authService.user?.userName}`}>
             <div className="d-flex align-items-center">
               <Avatar
-                src={authService.user.profileImage}
+                src={authService.user?.profileImage}
               />
-              <Typography className="mx-1" style={{ color: "white" }}>{authService.user.fullName}</Typography>
+              <Typography className="mx-1" style={{ color: "white" }}>{authService.user?.fullName}</Typography>
             </div>
           </Link> :
           <Link

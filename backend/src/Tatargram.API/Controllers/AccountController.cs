@@ -33,7 +33,8 @@ public class AccountController : Controller
             {
                 AccessToken = token,
                 FullName = user.FirstName + " " + user.LastName,
-                ProfileImage = user.ProfileImage
+                ProfileImage = user.ProfileImage,
+                UserName = user.UserName
             });
         }
 
@@ -62,7 +63,8 @@ public class AccountController : Controller
             {
                 AccessToken = tokenService.GenerateToken(user),
                 FullName = user.FirstName + " " + user.LastName,
-                ProfileImage = user.ProfileImage
+                ProfileImage = user.ProfileImage,
+                UserName = user.UserName
             };
         }
 

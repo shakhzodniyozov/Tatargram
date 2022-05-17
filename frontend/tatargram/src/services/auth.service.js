@@ -1,7 +1,10 @@
 import axios from "../axios/axios";
 
 class AuthService {
-    user = JSON.parse(localStorage.getItem("user"));
+    user;
+    constructor() {
+        this.user = JSON.parse(localStorage.getItem("user"));
+    }
 
     async signIn(data) {
         return await axios.post("/account/signin", data);

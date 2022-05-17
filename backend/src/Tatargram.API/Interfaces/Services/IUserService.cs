@@ -7,8 +7,7 @@ namespace Tatargram.Interfaces.Services;
 
 public interface IUserService
 {
-    Task<UserInfoViewModel> GetUserInfo(Guid id);
-    Task<UserInfoViewModel> GetCurrentUserInfo();
+    Task<UserInfoViewModel> GetUserInfo(string userName);
     Task FollowTo(Guid userId);
     Task UnfollowFrom(Guid userId);
     Task UpdateUser(UpdateUserInfoQueryModel model);

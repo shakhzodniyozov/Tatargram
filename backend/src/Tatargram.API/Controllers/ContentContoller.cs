@@ -16,7 +16,8 @@ namespace Tatargram.Controllers
         [HttpGet]
         public IActionResult GetImage([FromQuery] string path)
         {
-            return PhysicalFile(Path.Combine(env.ContentRootPath, "files" + path), "image/jpeg");
+            string imagePath = env.WenRootPath + path;
+            return PhysicalFile(imagePath, "image/jpeg")
         }
     }
 }

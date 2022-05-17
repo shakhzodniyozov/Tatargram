@@ -47,7 +47,6 @@ export function Profile() {
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">{dt.fullName}</h4>
-              {/* <span className="profileInfoDesc">This is currently empty</span> */}
               <span className="profileInfoDesc">Followers: {followers} Following: {followings}</span>
             </div>
           </div>

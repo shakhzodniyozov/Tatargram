@@ -95,9 +95,6 @@ export function Feed() {
               </div>
               <div className="mt-1">
                 <span
-                  onClick={_ => {
-                    setModalData({ ...modalData, showLikes: true, postId: post.id })
-                  }}
                   style={{ cursor: "pointer" }}
                 >
                   <strong>{post.likes} {post.likes === 0 || post.likes > 4 ? "лайков" : "лайка"}</strong>

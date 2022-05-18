@@ -11,9 +11,8 @@ const ax = axios.create({
 ax.interceptors.response.use(response => {
     return response;
 }, error => {
-    console.log("error", error)
     if (error.response.status === 401)
-        window.location.href.replace("/signin");
+        window.location.href = "/signin";
     return Promise.reject(error);
 });
 

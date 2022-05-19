@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Tatargram.Controllers
@@ -16,8 +15,8 @@ namespace Tatargram.Controllers
         [HttpGet]
         public IActionResult GetImage([FromQuery] string path)
         {
-            string imagePath = env.WenRootPath + path;
-            return PhysicalFile(imagePath, "image/jpeg")
+            string imagePath = env.WebRootPath + path;
+            return PhysicalFile(imagePath, "image/jpeg");
         }
     }
 }

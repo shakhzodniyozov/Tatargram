@@ -19,15 +19,6 @@ export function Post({ post, posts, setPosts }) {
     postService.likePost(postId);
   }
 
-  function getCorrectWord(x) {
-    let str = "лайк";
-    if (x === 0 || x > 4)
-      str += "ов";
-    else if (x > 1 && x < 5)
-      str += "а";
-    return str;    
-  }
-
   function unlikePost(postId) {
     let postsCopy = [...posts];
     let likedPost = postsCopy.find(x => x.id === postId);
@@ -35,6 +26,15 @@ export function Post({ post, posts, setPosts }) {
     likedPost.liked = false;
     setPosts(postsCopy);
     postService.unlikePost(postId);
+  }
+
+  function getCorrectWord(x) {
+    let str = "лайк";
+    if (x === 0 || x > 4)
+      str += "ов";
+    else if (x > 1 && x < 5)
+      str += "а";
+    return str;
   }
 
   return (

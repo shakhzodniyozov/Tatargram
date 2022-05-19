@@ -20,7 +20,6 @@ app.UseCors("ClientPolicy");
 app.UseMiddleware<ExceptionHandler>();
 app.UseRouting();
 
-app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -72,7 +72,8 @@ public class UserService : IUserService
             Followings = followings,
             Posts = posts,
             IsSubscribed = user.Followings.Any(x => x.UserId == user.Id),
-            ProfileImage = currentUser.ProfileImage
+            ProfileImage = currentUser.ProfileImage,
+            Id = currentUser.Id
         };
 
         return viewModel;

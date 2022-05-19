@@ -15,13 +15,13 @@ public class ImageService
     public async Task<List<Image>> SetImages(IEntity entity, string[] photos)
     {
         string type = entity.GetType().Name;
-        Directory.CreateDirectory($"{ImagePath}/images/{type}/{entity.Id}");
+        Directory.CreateDirectory(Path.Combine(ImagePath, "images", type, entity.Id.ToString()));
         var images = new List<Image>();
 
         foreach (var p in photos)
         {
             string fileExtension = ParseFileExtension(p);
-            string fileName = $"{ImagePath}/images/{type}/{entity.Id}/{Guid.NewGuid().ToString()}.{fileExtension}";
+            string fileName = Path.Combine(ImagePath, "images", type, entity.Id.ToString(), $"{Guid.NewGuid().ToString()}.{fileExtension}");
             byte[] imageBytes = Convert.FromBase64String(p.Substring(p.IndexOf(',') + 1));
             using (FileStream stream = new FileStream(fileName, FileMode.Create))
                 await stream.WriteAsync(imageBytes, 0, imageBytes.Count());
@@ -48,7 +48,7 @@ public class ImageService
 
     public void DeletePostImages(Guid id)
     {
-        Directory.Delete($"{ImagePath}/images/Post/{id.ToString()}", true);
+        Directory.Delete(Path.Combine(ImagePath, "images", "Post", id.ToString()), true);
     }
 
     public void DeleteImage(string path)

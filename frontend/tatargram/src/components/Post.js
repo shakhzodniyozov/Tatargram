@@ -28,6 +28,15 @@ export function Post({ post, posts, setPosts }) {
     postService.unlikePost(postId);
   }
 
+  function getCorrectWord(x) {
+    let str = "лайк";
+    if (x === 0 || x > 4)
+      str += "ов";
+    else if (x > 1 && x < 5)
+      str += "а";
+    return str;
+  }
+
   return (
     <div className="d-flex flex-column align-items-center">
       <div key={post.id} className="post">
@@ -78,7 +87,7 @@ export function Post({ post, posts, setPosts }) {
             <span
               style={{ cursor: "pointer" }}
             >
-              <strong>{post.likes} {post.likes === 0 || post.likes > 4 ? "лайков" : "лайка"}</strong>
+              <strong>{post.likes} {getCorrectWord(post.likes)}</strong>
             </span>
           </div>
           <span className="mt-2">{post.description}</span>

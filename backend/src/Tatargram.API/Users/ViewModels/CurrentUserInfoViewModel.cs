@@ -2,6 +2,7 @@ namespace Tatargram.Users.ViewModels;
 
 public class UserInfoViewModel
 {
+    public Guid Id { get; set; }
     public string? FullName { get; set; }
     public string? DateOfBirth { get; set; }
     public bool IsSubscribed { get; set; }

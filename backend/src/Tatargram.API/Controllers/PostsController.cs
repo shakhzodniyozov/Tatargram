@@ -32,11 +32,9 @@ public class PostsController : Controller
 
     #region POST
     [HttpPost]
-    public async Task<IActionResult> Create(CreatePostQueryModel model)
+    public async Task<ActionResult<PostViewModel>> Create(CreatePostQueryModel model)
     {
-        await postService.Create(model);
-
-        return NoContent();
+        return Ok(await postService.Create<PostViewModel>(model));
     }
 
     [HttpPost("like/{postId}")]

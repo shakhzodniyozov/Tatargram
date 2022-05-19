@@ -53,16 +53,18 @@ public class UserService : IUserService
         var followers = await userManager.Users.Where(x => followersId.Contains(x.Id)).Select(x => new UserShortInfo(x.Id, $"{x.FirstName} {x.LastName}")).ToArrayAsync();
         var followings = await userManager.Users.Where(x => followingsId.Contains(x.Id)).Select(x => new UserShortInfo(x.Id, $"{x.FirstName} {x.LastName}")).ToArrayAsync();
 
-        var posts = user.Posts.Select(x => new PostViewModel()
-        {
-            AuthorUserName = user.UserName,
-            AuthorFullName = $"{user.FirstName} {user.LastName}",
-            Description = x.Description,
-            Images = x.Photos.Select(p => p.RelativePaths!).ToList(),
-            PublishDate = x.PublishDate.Humanize(null, null, new CultureInfo("ru-RU")),
-            Id = x.Id,
-            Likes = x.LikedUsers.Count
-        });
+        // var posts = user.Posts.OrderByDescending(x => x.PublishDate).Select(x => new PostViewModel()
+        // {
+        //     AuthorUserName = user.UserName,
+        //     AuthorFullName = $"{user.FirstName} {user.LastName}",
+        //     Description = x.Description,
+        //     Images = x.Photos.Select(p => p.RelativePaths!).ToList(),
+        //     PublishDate = x.PublishDate.Humanize(null, null, new CultureInfo("ru-RU")),
+        //     Id = x.Id,
+        //     Likes = x.LikedUsers.Count
+        // });
+
+        var posts = mapper.Map<IEnumerable<PostViewModel>>(user.Posts.OrderByDescending(x => x.PublishDate).ToArray());
 
         var viewModel = new UserInfoViewModel()
         {
@@ -138,16 +140,22 @@ public class UserService : IUserService
         return users;
     }
 
-    public async Task SetProfileImage(SetProfileImageQueryModel model)
+    public async Task<object> SetProfileImage(SetProfileImageQueryModel model)
     {
         if (!string.IsNullOrEmpty(currentUser.ProfileImage))
             imageService.DeleteImage(currentUser.ProfileImage);
 
-        if (model.ImagePath != null)
+        if (!string.IsNullOrEmpty(model.ImagePath))
+        {
             this.currentUser.ProfileImage = model.ImagePath;
-        else if (model.ImageAsBase64 != null)
-            await imageService.SetImages((IEntity)currentUser, new string[] { model.ImageAsBase64 });
+        }
+        else if (!string.IsNullOrEmpty(model.ImageAsBase64))
+        {
+            currentUser.ProfileImage = (await imageService.SetImages(currentUser, new string[] { model.ImageAsBase64 })).First().RelativePaths!;
+        }
 
         await userManager.UpdateAsync(currentUser);
+
+        return new { profileImage = currentUser.ProfileImage };
     }
 }

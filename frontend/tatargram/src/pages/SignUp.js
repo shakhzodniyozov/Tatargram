@@ -23,7 +23,7 @@ export function SignUp() {
   function uploadForm() {
     authService.signUp(form).then(response => {
       if (response) {
-        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
       }
     })

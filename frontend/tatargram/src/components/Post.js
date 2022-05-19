@@ -1,14 +1,17 @@
 
-import { Avatar, Button, TextField } from "@mui/material";
+import { Avatar, Button, IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 import postService from "../services/post.service";
 import "../css/post.css";
 import { Link } from "react-router-dom";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoChatbubbleOutline } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
 
 export function Post({ post, posts, setPosts }) {
   const [comment, setComment] = useState({ postId: "", text: "", publishDate: null });
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const windowPath = window.location.pathname.substring(1);
 
   function likePost(postId) {
     let postsCopy = [...posts];
@@ -28,6 +31,15 @@ export function Post({ post, posts, setPosts }) {
     postService.unlikePost(postId);
   }
 
+  function deletePost() {
+    postService.delete(post.id).then(response => {
+      if (response) {
+        let postsCopy = posts.filter(x => x.id !== post.id);
+        setPosts(postsCopy);
+      }
+    });
+  }
+
   function getCorrectWord(x) {
     let str = "лайк";
     if (x === 0 || x > 4)
@@ -40,20 +52,27 @@ export function Post({ post, posts, setPosts }) {
   return (
     <div className="d-flex flex-column align-items-center">
       <div key={post.id} className="post">
-        <div className="px-4 py-3">
+        <div className="d-flex justify-content-between px-4 py-3">
           <Link
             to={`/${post.authorUserName}`}
             style={{ textDecoration: "none", color: "black" }}
           >
             <div className="d-flex flex-row align-items-center">
               <Avatar
-                src={post.authorPhoto}
+                sx={{ width: 62, height: 62 }}
+                src={`http://localhost:5000/api/content?path=${post.authorPhoto}`}
               />
               <span className="mx-1 text-black">
                 <strong>{post.authorFullName}</strong>
               </span>
             </div>
           </Link>
+          <IconButton
+            hidden={currentUser.userName !== windowPath}
+            onClick={deletePost}
+          >
+            <MdDelete />
+          </IconButton>
         </div>
         <div>
           {post.images.map((image, i) => {
@@ -69,18 +88,20 @@ export function Post({ post, posts, setPosts }) {
         </div>
         <div className="p-3 d-flex flex-column">
           <div className="d-flex">
-            {
-              post.liked ?
-                <BsHeartFill
-                  size={32}
-                  color="#ed404f"
-                  onClick={(e) => unlikePost(post.id)}
-                /> :
-                <BsHeart
-                  size={32}
-                  onClick={_ => likePost(post.id)}
-                />
-            }
+            <div hidden={currentUser.userName === windowPath}>
+              {
+                post.liked ?
+                  <BsHeartFill
+                    size={32}
+                    color="#ed404f"
+                    onClick={(e) => unlikePost(post.id)}
+                  /> :
+                  <BsHeart
+                    size={32}
+                    onClick={_ => likePost(post.id)}
+                  />
+              }
+            </div>
             <IoChatbubbleOutline size={32} className="mx-3" />
           </div>
           <div className="mt-1">

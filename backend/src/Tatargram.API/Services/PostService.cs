@@ -25,7 +25,7 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
         this.imageService = imageService;
     }
 
-    public override async Task Create(PostBaseQueryModel model)
+    public async Task<TViewModel> Create<TViewModel>(PostBaseQueryModel model)
     {
         var currentUser = await userManager.FindByNameAsync(contextAccessor.HttpContext?.User.Identity?.Name);
         if (currentUser == null)
@@ -37,6 +37,10 @@ public class PostService : BaseService<Post, PostBaseQueryModel>, IPostService
         post.Photos = await imageService.SetImages(post, ((CreatePostQueryModel)model).Photos);
 
         await repository.Create(post);
+        post.Author = currentUser;
+        post.AuthorId = currentUser.Id;
+
+        return mapper.Map<TViewModel>(post);
     }
 
     public async Task<IEnumerable<PostViewModel>> GetPagedFeedList(int page = 1, int pageSize = 30)

@@ -11,3 +11,7 @@
   max-height: 50rem;
   object-fit: contain;
 }
+
+.new-post {
+  width: 70%;
+}

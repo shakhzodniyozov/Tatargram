@@ -4,6 +4,7 @@ namespace Tatargram.Interfaces.Services;
 
 public interface IPostService : IService<Post, PostBaseQueryModel>
 {
+    Task<TViewModel> Create<TViewModel>(PostBaseQueryModel model);
     Task<IEnumerable<PostViewModel>> GetPagedFeedList(int page = 1, int pageSize = 30);
     Task LikeThePost(Guid id);
     Task UnlikeThePost(Guid id);

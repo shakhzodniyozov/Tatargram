@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-
+using Tatargram.Interfaces;
 
 namespace Tatargram.Models;
 
-public class User : IdentityUser<Guid>
+public class User : IdentityUser<Guid>, IEntity
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

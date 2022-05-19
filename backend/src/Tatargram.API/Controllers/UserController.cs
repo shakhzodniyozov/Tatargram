@@ -52,10 +52,9 @@ public class UserController : Controller
 
 
     [HttpPost("profile-image")]
-    public async Task<IActionResult> SetProfileImage(SetProfileImageQueryModel model)
+    public async Task<ActionResult<object>> SetProfileImage(SetProfileImageQueryModel model)
     {
-        await userService.SetProfileImage(model);
-        return Ok();
+        return Ok(await userService.SetProfileImage(model));
     }
 
     #endregion

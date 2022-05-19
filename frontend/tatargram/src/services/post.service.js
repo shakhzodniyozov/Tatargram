@@ -17,6 +17,14 @@ class PostService {
     async unlikePost(postId) {
         return await axios.post(`/posts/unlike/${postId}`)
     }
+
+    async create(post) {
+        return await axios.post("/posts", post);
+    }
+
+    async delete(id) {
+        return await axios.delete(`/posts/${id}`);
+    }
 }
 
 export default new PostService();

@@ -12,5 +12,5 @@ public interface IUserService
     Task UnfollowFrom(Guid userId);
     Task UpdateUser(UpdateUserInfoQueryModel model);
     Task<IEnumerable<UserSuggestionViewModel>> Search(string value);
-    Task SetProfileImage(SetProfileImageQueryModel model);
+    Task<object> SetProfileImage(SetProfileImageQueryModel model);
 }

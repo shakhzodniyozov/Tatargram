@@ -10,5 +10,5 @@
 
 Для запуска клиентской части:
 1. Зайти в папку ..\Tatargram\frontend\tatargram\src
-2. В терминале прописать npm start
-P.S. пердварительно должен быть установлен react. "npm install react"
+2. В терминале прописать "npm start"
+Примечание: предварительно должен быть установлен React. "npm install react"
